@@ -5,13 +5,15 @@ import Button from "../components/Button";
 
 const BierList = () => {
   const [bierData, setBierData] = useState("");
+
+  // fetch api数据
   useEffect(() => {
     fetch("https://ih-beers-api2.herokuapp.com/beers")
       .then((response) => response.json())
       .then((data) => setBierData(data))
       .catch((error) => console.error(error));
   }, []);
-  console.log(bierData);
+
   return (
     <>
       <section className="listPage">
@@ -20,7 +22,6 @@ const BierList = () => {
             {bierData.map((singleBeer, index) => (
               <article key={index}>
                 <img src={singleBeer.image_url} alt={singleBeer.name} />
-
                 <div>
                   <h2>{singleBeer.name} </h2>
                   <h3>{singleBeer.tagline} </h3>

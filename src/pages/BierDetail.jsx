@@ -7,39 +7,53 @@ import { useEffect, useState } from "react";
 
 const BierDetail = () => {
   const beerParams = useParams();
-  console.log(beerParams);
 
-  const [bierDetail, setBierDetail] = useState([]);
+  const [beers, setBeers] = useState([]);
 
+  // hier ist andere Lösung, klar und kurzer
+  // const [bierDetail, setBierDetail]
+  // useEffect(() => {
+  //   fetch(`https://ih-beers-api2.herokuapp.com/beers/${beerParams.beers}`)
+  //     .then((response) => response.json())
+  //     .then((data) => setBierDetail(data))
+  //     .catch((error) => console.error(error));
+  // }, []);
+
+  // fetch API
   useEffect(() => {
-    fetch(`https://ih-beers-api2.herokuapp.com/beers/${beerParams.beers}`)
+    fetch(`https://ih-beers-api2.herokuapp.com/beers`)
       .then((response) => response.json())
-      .then((data) => setBierDetail(data))
+      .then((data) => setBeers(data))
       .catch((error) => console.error(error));
   }, []);
 
+  //  finde das ausgewahlte Bier
+  const beerDetail = beers.find((beer) => beer._id === beerParams.beers);
+
+  // hier unter ist das HTML
   return (
     <section className="bierDetailPage">
       <Link to="/">
         <Nav />
       </Link>
-      {bierDetail ? (
+
+      {beerDetail ? ( //这里判断一下beerDetail里是否有数据
         <article>
-          <img src={bierDetail.image_url} alt={bierDetail.name} />
+          <img src={beerDetail.image_url} alt={beerDetail.name} />
           <div>
-            <h4>{bierDetail.name}</h4>
-            <h3>{bierDetail.tagline}</h3>
+            <h4>{beerDetail.name}</h4>
+            <h3>{beerDetail.tagline}</h3>
           </div>
           <div>
             <div>
               <p>First brewed:</p>
-              <p>{bierDetail.first_brewed}</p>
+              <p>{beerDetail.first_brewed}</p>
             </div>
             <div>
               <p>Attenuation level:</p>
-              <p>{bierDetail.attenuation_level}</p>
+              <p>{beerDetail.attenuation_level}</p>
             </div>
-            <p>{bierDetail.description}</p>
+            <p>{beerDetail.description}</p>
           </div>
           <Link to="/bierlist ">
             <Back />
