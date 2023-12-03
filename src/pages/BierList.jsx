@@ -11,9 +11,7 @@ const BierList = () => {
       .then((data) => setBierData(data))
       .catch((error) => console.error(error));
   }, []);
-
   console.log(bierData);
-
   return (
     <>
       <section className="listPage">
