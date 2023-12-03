@@ -1,40 +1,48 @@
 import { Link } from "react-router-dom";
 import Back from "../components/Back";
 import Nav from "../components/Nav";
+import { useEffect, useState } from "react";
+
 const RandomBeer = () => {
+  const [bier, setBier] = useState([]);
+
+  // fetch api数据
+  useEffect(() => {
+    fetch("https://ih-beers-api2.herokuapp.com/beers")
+      .then((response) => response.json())
+      .then((data) => setBier(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const randomBeer = bier[Math.floor(Math.random() * bier.length)];
+
   return (
     <section className="bierDetailPage">
-      <article>
-        <img
-          src="https://s3-alpha-sig.figma.com/img/1f2f/5612/21efaa66c5a6671ec77715c85854ae44?Expires=1702252800&Signature=g7Nzw3h3eLPuB~Je61~jGbZ2JHBdYRzfJbxzuITYb2P9kHcIqu2G3KAi0maMPkfTPW8LVKj5lTzYBXbigtvDUmmVSwHmWK7tkDAfSvliFt6Usu1CWrnX2um4hk8X~Vp6KNDUcfzGwMH5lne6QjY-mFLM990AQWLwAjLORfn21zahnB8WeDv5YWH03ThZQWxRpc9XUKtR6agbOFbYKtOoXw9dtde32iu5V1OmZUptZkdGAmj4ofDHJC46OeUiOIyOt~oV7FJeOXbiKyq267JRsiKMQp40~7jzXRuxRONaO9O3wR0MzLZOd5HHJcJbn27s2sUdEeQmMYzGkwUCeSIglw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-          alt="Avery Brown 
-          Dredge"
-        />
-        <div>
-          <h4>Avery Brown Dredge</h4>
-          <h3>Bloggers' Imperial Pilsner.</h3>
-        </div>
-        <div>
+      {randomBeer ? (
+        <article>
+          <img src={randomBeer.image_url} alt={randomBeer.name} />
           <div>
-            <p>First brewed:</p>
-            <p> 09/2007</p>
+            <h4>{randomBeer.name} </h4>
+            <h3>{randomBeer.tagline} </h3>
           </div>
           <div>
-            <p>Attenuation level:</p>
-            <p>76</p>
+            <div>
+              <p>First brewed:</p>
+              <p>{randomBeer.first_brewed} </p>
+            </div>
+            <div>
+              <p>Attenuation level:</p>
+              <p>{randomBeer.attenuation_level}</p>
+            </div>
+            <p>{randomBeer.description}</p>
           </div>
-          <p>
-            An Imperial Pilsner in collaboration with beer writers. Tradition.
-            Homage. Revolution. We wanted to showcase the awesome backbone of
-            the Czech brewing tradition, the noble Saaz hop, and also tip our
-            hats to the modern beers that rock our world, and the people who
-            make them.
-          </p>
-        </div>
-        <Link to="/ ">
-          <Back />
-        </Link>
-      </article>
+          <Link to="/ ">
+            <Back />
+          </Link>
+        </article>
+      ) : (
+        <p>random beer is comming</p>
+      )}
       <Link to="/">
         <Nav />
       </Link>
